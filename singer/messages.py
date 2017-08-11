@@ -1,5 +1,6 @@
 import sys
 import simplejson as json
+import decimal
 
 
 class Message(object):
@@ -153,7 +154,7 @@ def _required_key(msg, k):
 
 def parse_message(msg):
     """Parse a message string into a Message object."""
-    obj = json.loads(msg)
+    obj = json.loads(msg, parse_float=decimal.Decimal)
     msg_type = _required_key(obj, 'type')
 
     if msg_type == 'RECORD':
