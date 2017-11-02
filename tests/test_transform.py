@@ -1,4 +1,6 @@
 import unittest
+from datetime import datetime as dt_
+from datetime import timezone
 from singer import transform
 from singer.transform import *
 
@@ -71,6 +73,14 @@ class TestTransform(unittest.TestCase):
         schema = {"type": "string", "format": "date-time"}
         string_datetime = "2017-01-01T00:00:00.123000Z"
         self.assertEqual(string_datetime, transform(string_datetime, schema, NO_INTEGER_DATETIME_PARSING))
+
+    def test_datetime_already_datetime_transform(self):
+        schema = {"type": "string", "format": "date-time"}
+        string_datetime = "2017-01-01T00:00:00.000000Z"
+        datetime_datetime = dt_(2017, 1, 1, tzinfo=timezone.utc)
+        self.assertEqual(string_datetime, transform(datetime_datetime,
+                                                    schema,
+                                                    NO_INTEGER_DATETIME_PARSING))
 
     def test_anyof_datetime(self):
         schema = {'anyOf': [{'type': 'null'}, {'format': 'date-time', 'type': 'string'}]}

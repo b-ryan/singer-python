@@ -169,7 +169,8 @@ class Transformer:
     def _transform_datetime(self, value):
         if self.integer_datetime_fmt not in VALID_DATETIME_FORMATS:
             raise Exception("Invalid integer datetime parsing option")
-
+        if isinstance(value, datetime.date):
+            return strftime(value)
         if self.integer_datetime_fmt == NO_INTEGER_DATETIME_PARSING:
             return string_to_datetime(value)
         else:
